@@ -1,5 +1,3 @@
 # Assertions Framework API
 
-!!! note
-
-    This is Work in Progress
+Follow the doc on https://terradue.github.io/assertions-mate/
