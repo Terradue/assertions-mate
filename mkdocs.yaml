@@ -1,0 +1,88 @@
+site_name: Assertions Mate
+# site_url: not available
+site_author: Fabrice Brito, Simone Tripodi
+repo_url: https://git.terradue.com/scoop/assertions-mate/
+repo_name: scoop/assertions-mate
+
+theme:
+  logo: imgs/icon-eoap.png
+  name: material
+
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to light mode
+
+plugins:
+- search
+- mermaid2:
+    version: 11.4.1
+- mkdocs-jupyter:
+    execute: true
+    show_input: True
+    no_input: False
+- build_plantuml:
+    render: 'local' # or "local" for local rendering
+    bin_path: /usr/bin/plantuml
+    disable_ssl_certificate_validation: true # for self-signed and invalid certs
+    output_format: 'png'
+    allow_multiple_roots: false # in case your codebase contains more locations for diagrams (all ending in diagram_root)
+    diagram_root: 'docs/diagrams' # should reside under docs_dir
+    input_folder: 'src'
+    output_folder: 'out'
+    theme_enabled: true
+    theme_folder: "include/themes"
+    theme_light: "light.puml"
+    theme_dark: "dark.puml"
+- mkdocs-jupyter:
+    execute: true
+    show_input: false
+    no_input: false
+    kernel_name: bash
+
+markdown_extensions:
+- pymdownx.details
+- abbr
+- admonition
+- footnotes
+- pymdownx.caret
+- pymdownx.mark
+- pymdownx.tilde
+- pymdownx.arithmatex:
+    generic: true
+- pymdownx.superfences
+- pymdownx.tabbed
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_div_format
+- attr_list
+- pymdownx.snippets:
+    base_path: './'
+- pymdownx.highlight:
+    line_spans: __span
+
+extra_css:
+- styles/css/app.css
+  
+extra_javascript:
+- javascripts/config.js
+- https://polyfill.io/v3/polyfill.min.js?features=es6
+- https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+- Introduction: index.md
+- HowTo:
+  - jsonschema.ipynb
+  - regopy.ipynb
+  - pygeofilter.ipynb
+
+copyright: <a href="https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg">License CC BY-SA 4.0</a>, by <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons</a>

@@ -1,0 +1,9 @@
+.project
+.settings
+.pydevproject
+public
+docs/diagrams/out
+openapi_bundled.yaml
+*.pyc
+schema.yaml
+src/assertions_mate/__pycache__
