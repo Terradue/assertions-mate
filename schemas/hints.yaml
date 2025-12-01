@@ -13,66 +13,74 @@
 # limitations under the License.
 
 $base: "http://oeap.github.io/schema#"
+
 $namespaces:
   cwl: "https://w3id.org/cwl/cwl#"
+
 $graph:
-- $import: https://w3id.org/cwl/CommonWorkflowLanguage.yml
+# Import the CWL v1.2 schema; adjust if you target another version
+- $import: https://github.com/common-workflow-language/cwl-v1.2/raw/main/CommonWorkflowLanguage.yml
 
 - name: JSONSchemaHint
   type: record
   extends: cwl:ProcessHint
   inVocab: false
-  doc: "Indicates that a process requires a [JSON Schema](https://json-schema.org/) validation."
+  doc: "Indicates that a process requires a JSON Schema validation."
   fields:
-    class:
-      type: 'string'
-      doc: "Always 'JSONSchemaHint'"
-      jsonldPredicate:
-        "_id": "@type"
-        "_type": "@vocab"
+  - name: class
+    type: string
+    doc: "Always 'JSONSchemaHint'"
+    jsonldPredicate:
+      _id: "@type"
+      _type: "@vocab"
 
 - name: RegoPolicyHint
   type: record
   extends: cwl:ProcessHint
   inVocab: false
-  doc: "Indicates that a process requires a [Rego Policy](https://www.openpolicyagent.org/) validation."
+  doc: "Indicates that a process requires a Rego Policy validation."
   fields:
-    class:
-      type: 'string'
-      doc: "Always 'RegoPolicyHint'"
-      jsonldPredicate:
-        "_id": "@type"
-        "_type": "@vocab"
-    module:
-      type: 'string'
-    queries:
-      type: 'array'
-      items:
-        type: 'string'
+  - name: class
+    type: string
+    doc: "Always 'RegoPolicyHint'"
+    jsonldPredicate:
+      _id: "@type"
+      _type: "@vocab"
+  - name: module
+    type: string
+    doc: "The Rego module to load."
+  - name: queries
+    type:
+      type: array
+      items: string
+    doc: "List of Rego queries to evaluate."
 
 - name: Cql2Query
   type: record
+  inVocab: false
+  doc: "Represents a single CQL2 query and an associated message."
   fields:
-    id:
-      type: 'string'
-    cql2:
-      type: 'string'
-    message:
-      type: 'string'
+  - name: id
+    type: string
+  - name: cql2
+    type: string
+  - name: message
+    type: string
 
 - name: Cql2FilterHint
   type: record
   extends: cwl:ProcessHint
   inVocab: false
-  doc: "Indicates that a process requires a [CQL2](https://www.ogc.org/standards/cql2/) validation."
+  doc: "Indicates that a process requires a CQL2-based validation."
   fields:
-    class:
-      type: 'string'
-      doc: "Always 'Cql2FilterHint'"
-      jsonldPredicate:
-        "_id": "@type"
-        "_type": "@vocab"
-    queries:
-      type: 'array'
-      items:
-        type: 'string'
+  - name: class
+    type: string
+    doc: "Always 'Cql2FilterHint'"
+    jsonldPredicate:
+      _id: "@type"
+      _type: "@vocab"
+  - name: queries
+    type:
+      type: array
+      items: Cql2Query   # or 'string' if you want plain strings
+    doc: "CQL2 query definitions to apply."
