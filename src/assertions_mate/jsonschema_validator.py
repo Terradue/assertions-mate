@@ -13,43 +13,32 @@
 # limitations under the License.
 
 from . import BaseValidator
-from .error_models import (
-    InvalidBodyPropertyFormat,
-    ErrorDetail,
-    ProblemDetails
-)
+from .error_models import InvalidBodyPropertyFormat, ErrorDetail, ProblemDetails
 from jsonschema import Draft202012Validator
-from typing import (
-    Any,
-    Mapping
-)
+from typing import Any, Mapping
+
 
 class JSONSchemaValidator(BaseValidator):
-
-    def __init__(
-        self,
-        schema: Mapping[str, Any]
-    ):
+    def __init__(self, schema: Mapping[str, Any]):
         self.validator = Draft202012Validator(schema)
 
-    def validate_inputs(
-        self,
-        data: Mapping[str, Any]
-    ) -> ProblemDetails | None:
+    def validate_inputs(self, data: Mapping[str, Any]) -> ProblemDetails | None:
         errors_list = []
-        
+
         for error in self.validator.iter_errors(data):
             print(error.__dict__)
 
             errors_list.append(
                 ErrorDetail(
                     detail=error.message,
-                    pointer=f"#/{'/'.join(error.path)}" if error.path and isinstance(error.path, str) else None,
-                    code='.'.join(error.schema_path)
+                    pointer=f"#/{'/'.join(error.path)}"
+                    if error.path and isinstance(error.path, str)
+                    else None,
+                    code=".".join(error.schema_path),
                 )
             )
 
         if errors_list:
             return InvalidBodyPropertyFormat(errors=errors_list)
-        
+
         return None

@@ -12,37 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import (
-    BaseValidator,
-    RegoPolicyHint
-)
-from .error_models import (
-    BusinessRuleViolation,
-    ErrorDetail,
-    ProblemDetails
-)
+from . import BaseValidator
+from .error_models import BusinessRuleViolation, ErrorDetail, ProblemDetails
 from regopy import Interpreter
-from typing import (
-    Any,
-    List,
-    Mapping
-)
+from typing import Any, List, Mapping
+
 
 class RegoValidator(BaseValidator):
-
-    def __init__(
-        self,
-        module: str,
-        queries: List[str]
-    ):
+    def __init__(self, module: str, queries: List[str]):
         self.rego = Interpreter(True)
         self.rego.add_module("workflow", module)
         self.queries = queries
 
-    def validate_inputs(
-        self,
-        data: Mapping[str, Any]
-    ) -> ProblemDetails | None:
+    def validate_inputs(self, data: Mapping[str, Any]) -> ProblemDetails | None:
         errors_list = []
 
         self.rego.set_input(data)
@@ -54,12 +36,7 @@ class RegoValidator(BaseValidator):
                 if not exprs:  # safety check
                     continue
 
-                errors_list.append(
-                    ErrorDetail(
-                        pointer=query,
-                        detail=exprs[0]
-                    )
-                )
+                errors_list.append(ErrorDetail(pointer=query, detail=exprs[0]))
 
         if errors_list:
             return BusinessRuleViolation(errors=errors_list)

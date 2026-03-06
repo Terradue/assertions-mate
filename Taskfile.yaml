@@ -1,4 +1,4 @@
-# Copyright 2025 Terradue
+# Copyright 2026 Terradue
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,4 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "0.2.0"
+version: '3'
+
+tasks:
+
+  test:
+    desc: Run tests
+    cmds:
+    - hatch run test:test-show-setup
+
+  check:
+    desc: Run code quality checks
+    cmds:
+    - hatch run dev:check
+
+  lint:
+    desc: Run linters
+    cmds:
+    - hatch run dev:lint
