@@ -12,60 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import (
-    BaseValidator,
-    Cql2Query
-)
+from . import BaseValidator, Cql2Query
 from .error_models import (
     BusinessRuleViolation,
     ErrorDetail,
     ProblemDetails,
-    ServerError
 )
 from pygeofilter.backends.native.evaluate import NativeEvaluator
 from pygeofilter.parsers.cql2_text import parse as parse_cql2_text
 from pygeofilter.parsers.cql2_json import parse as parse_cql2_json
 from shapely import geometry
-from typing import (
-    Any,
-    List,
-    Mapping,
-    Union
-)
+from typing import Any, List, Mapping, Union
+
 
 def ensure_bbox(input: Union[Mapping[str, Any], List[float], str]):
     value = []
 
     if isinstance(input, dict):
-        value = input['bbox']
+        value = input["bbox"]
         if not value:
             raise ValueError(f"Input {input} doesn't have a 'bbox' property")
     elif isinstance(input, str):
-        value = [float(x) for x in str(input).split(',')]
+        value = [float(x) for x in str(input).split(",")]
     else:
         value = input
 
     return geometry.box(*value)
 
-class Cql2Validator(BaseValidator):
 
-    def __init__(
-        self,
-        queries: List[Cql2Query]
-    ):
+class Cql2Validator(BaseValidator):
+    def __init__(self, queries: List[Cql2Query]):
         self.evaluator = NativeEvaluator(
-            function_map={
-                'ensure_bbox': ensure_bbox
-            },
-            use_getattr=False
+            function_map={"ensure_bbox": ensure_bbox}, use_getattr=False
         )
 
         self.queries = queries
 
-    def validate_inputs(
-        self,
-        data: Mapping[str, Any]
-    ) -> ProblemDetails | None:
+    def validate_inputs(self, data: Mapping[str, Any]) -> ProblemDetails | None:
         errors_list = []
 
         for filter in self.queries:
@@ -78,7 +61,7 @@ class Cql2Validator(BaseValidator):
                     errors_list.append(
                         ErrorDetail(
                             pointer=filter.id,
-                            detail=f"Filter does not look like a valid CQL2 Text encoded sentece: {e}"
+                            detail=f"Filter does not look like a valid CQL2 Text encoded sentece: {e}",
                         )
                     )
             elif isinstance(filter.cql2, dict):
@@ -88,14 +71,14 @@ class Cql2Validator(BaseValidator):
                     errors_list.append(
                         ErrorDetail(
                             pointer=filter.id,
-                            detail=f"Filter does not look like a valid CQL2 JSON encoded structure: {e}"
+                            detail=f"Filter does not look like a valid CQL2 JSON encoded structure: {e}",
                         )
                     )
             else:
                 errors_list.append(
                     ErrorDetail(
                         pointer=filter.id,
-                        detail=f"Filter is expressed in an unrecognizible format: {type(filter.cql2)}"
+                        detail=f"Filter is expressed in an unrecognizible format: {type(filter.cql2)}",
                     )
                 )
 
@@ -104,10 +87,7 @@ class Cql2Validator(BaseValidator):
 
                 if not predicate(data):
                     errors_list.append(
-                        ErrorDetail(
-                            pointer=filter.id,
-                            detail=filter.message
-                        )
+                        ErrorDetail(pointer=filter.id, detail=filter.message)
                     )
 
         if errors_list:

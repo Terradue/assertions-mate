@@ -12,33 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import (
-    JSONSchemaHint,
-    RegoPolicyHint,
-    Cql2FilterHint,
-    extract_assertion_hints
-)
-from cwl2ogc import BaseCWLtypes2OGCConverter
+from . import extract_assertion_hints
 from cwl_utils.parser import load_document_by_uri
 from cwl_utils.parser.cwl_v1_2 import Workflow
 from datetime import datetime
 from loguru import logger
 from pathlib import Path
-from typing import (
-    Any,
-    Mapping
-)
+from typing import Any, Mapping
 
 import click
 import yaml
 import time
 
-def _scan_workflow(
-    wf: Workflow,
-    inputs: Mapping[str, Any]
-):
-    logger.info('------------------------------------------------------------------------')
-    workflow_id = wf.id.split('#')[-1]
+
+def _scan_workflow(wf: Workflow, inputs: Mapping[str, Any]):
+    logger.info(
+        "------------------------------------------------------------------------"
+    )
+    workflow_id = wf.id.split("#")[-1]
     logger.info(f"Validating #{workflow_id} {wf.class_} ({wf.cwlVersion}):")
 
     validators = []
@@ -50,7 +41,9 @@ def _scan_workflow(
         try:
             validators.append(hint_instance.validator())
         except Exception as e:
-            logger.error(f"An error occurred when setting up {type(hint_instance).__name__}: {e}")
+            logger.error(
+                f"An error occurred when setting up {type(hint_instance).__name__}: {e}"
+            )
 
     if validators:
         logger.info("Setup is over, validating...")
@@ -60,49 +53,38 @@ def _scan_workflow(
 
             problem_details = validator.validate_inputs(inputs)
             if problem_details:
-                logger.error(f"    {type(validator).__name__} detected violations below:")
+                logger.error(
+                    f"    {type(validator).__name__} detected violations below:"
+                )
 
                 for error_detail in problem_details.errors:
                     logger.error(f"    [{error_detail.pointer}] {error_detail.detail}")
             else:
-                logger.info(f"    {type(validator).__name__} execution terminated with no violations")
+                logger.info(
+                    f"    {type(validator).__name__} execution terminated with no violations"
+                )
     else:
         logger.info(f"No Validators configured in '#{workflow_id}.hints'")
 
+
 @click.command()
 @click.argument(
-    'workflow',
-    type=click.Path(
-        path_type=Path,
-        exists=True,
-        readable=True,
-        resolve_path=True
-    ),
-    required=True
+    "workflow",
+    type=click.Path(path_type=Path, exists=True, readable=True, resolve_path=True),
+    required=True,
 )
 @click.option(
-    '--inputs',
-    type=click.Path(
-        path_type=Path,
-        exists=True,
-        readable=True,
-        resolve_path=True
-    ),
+    "--inputs",
+    type=click.Path(path_type=Path, exists=True, readable=True, resolve_path=True),
     required=True,
-    help="The Workflow inputs to check against the input Workflow"
+    help="The Workflow inputs to check against the input Workflow",
 )
-def main(
-    workflow: Path,
-    inputs: Path
-):
+def main(workflow: Path, inputs: Path):
     start_time = time.time()
 
     logger.info(f"Loading CWL document from {workflow.absolute()}")
 
-    cwl_document = load_document_by_uri(
-        path=workflow,
-        load_all=True
-    )
+    cwl_document = load_document_by_uri(path=workflow, load_all=True)
 
     end_time = time.time()
     logger.info(f"{workflow.absolute()} load in {end_time - start_time:.4f} seconds")
@@ -114,15 +96,21 @@ def main(
 
     if isinstance(cwl_document, list):
         for wf in cwl_document:
-            _scan_workflow(wf, inputs_mapping)                
+            _scan_workflow(wf, inputs_mapping)
     else:
         _scan_workflow(cwl_document, inputs_mapping)
 
     end_time = time.time()
 
-    logger.info('------------------------------------------------------------------------')
-    logger.info('VALIDATION COMPLETE')
-    logger.info('------------------------------------------------------------------------')
+    logger.info(
+        "------------------------------------------------------------------------"
+    )
+    logger.info("VALIDATION COMPLETE")
+    logger.info(
+        "------------------------------------------------------------------------"
+    )
 
     logger.info(f"Total time: {end_time - start_time:.4f} seconds")
-    logger.info(f"Finished at: {datetime.fromtimestamp(end_time).isoformat(timespec='milliseconds')}")
+    logger.info(
+        f"Finished at: {datetime.fromtimestamp(end_time).isoformat(timespec='milliseconds')}"
+    )
