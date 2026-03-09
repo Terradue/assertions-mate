@@ -55,11 +55,6 @@ plugins:
     theme_folder: "include/themes"
     theme_light: "light.puml"
     theme_dark: "dark.puml"
-- mkdocs-jupyter:
-    execute: true
-    show_input: false
-    no_input: false
-    kernel_name: bash
 
 markdown_extensions:
 - pymdownx.details
