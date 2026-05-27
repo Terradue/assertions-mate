@@ -7,13 +7,9 @@ This guide shows how to validate two datetime inputs so that `end-date` is stric
 ```yaml
 inputs:
   start-date:
-    type:
-      - string
-      - "null"
+    type: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#DateTime
   end-date:
-    type:
-      - string
-      - "null"
+    type: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#DateTime
 ```
 
 ## 2. Add Rego checks
@@ -30,28 +26,31 @@ hints:
       }
 
       deny[msg] {
+        sd := input["start-date"]
+        sd != null
+        sd["value"] == null
+        msg := "start-date.value must be provided"
+      }
+
+      deny[msg] {
         input["end-date"] == null
         msg := "end-date must be provided"
       }
 
-      # RFC3339 UTC format (YYYY-MM-DDTHH:MM:SSZ)
       deny[msg] {
-        s := input["start-date"]
-        s != null
-        not regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", s)
-        msg := "start-date must be UTC RFC3339 like YYYY-MM-DDTHH:MM:SSZ"
+        ed := input["end-date"]
+        ed != null
+        ed["value"] == null
+        msg := "end-date.value must be provided"
       }
 
       deny[msg] {
-        e := input["end-date"]
-        e != null
-        not regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", e)
-        msg := "end-date must be UTC RFC3339 like YYYY-MM-DDTHH:MM:SSZ"
-      }
-
-      deny[msg] {
-        s := input["start-date"]
-        e := input["end-date"]
+        sd := input["start-date"]
+        ed := input["end-date"]
+        sd != null
+        ed != null
+        s := sd["value"]
+        e := ed["value"]
         regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", s)
         regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", e)
         e <= s
@@ -63,7 +62,16 @@ hints:
 
 Because both values use the same UTC RFC3339 shape, lexicographic string comparison is safe for ordering.
 
-## 3. Run
+## 3. Validate with sample values
+
+Valid payload shape:
+
+```yaml
+start-date:
+  value: "2026-05-27T10:00:00Z"
+end-date:
+  value: "2026-05-27T12:00:00Z"
+```
 
 ```bash
 assertions-mate path/to/workflow.cwl --inputs path/to/inputs.yaml

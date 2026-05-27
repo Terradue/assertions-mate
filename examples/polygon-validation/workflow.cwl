@@ -10,9 +10,7 @@ inputs:
   aoi:
     label: Area of interest
     doc: Area of interest
-    type:
-      - https://raw.githubusercontent.com/eoap/schemas/main/geojson.yaml#Polygon
-      - "null"
+    type: https://raw.githubusercontent.com/eoap/schemas/main/geojson.yaml#Polygon
 outputs: {}
 steps: {}
 hints:

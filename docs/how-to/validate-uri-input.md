@@ -1,6 +1,6 @@
 # How-to: Validate a CWL URI Input
 
-This guide shows how to validate a URI input using a packed CWL workflow and `eoap:RegoPolicyHint`.
+This guide shows how to validate a URI input using `eoap:RegoPolicyHint`.
 
 ## 1. Define the URI input
 
@@ -9,12 +9,12 @@ cwlVersion: v1.2
 class: Workflow
 id: uri-validation
 inputs:
-  stack-uri:
-    id: stack-uri
-    label: "Snapping Stack URI"
-    doc: "SNAPPING Stack STAC Collection URI"
+  input-uri:
+    id: input-uri
+    label: "Input URI"
+    doc: "Input URI to validate"
     type:
-      - string
+      - https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#URI
       - "null"
 ```
 
@@ -29,16 +29,25 @@ hints:
       package workflow
 
       deny[msg] {
-        input["stack-uri"] == null
-        msg := "stack-uri must be provided"
+        input["input-uri"] == null
+        msg := "input-uri must be provided"
       }
 
       deny[msg] {
-        uri := input["stack-uri"]
+        iu := input["input-uri"]
+        iu != null
+        iu["value"] == null
+        msg := "input-uri.value must be provided"
+      }
+
+      deny[msg] {
+        iu := input["input-uri"]
+        iu != null
+        uri := iu["value"]
         uri != null
         not startswith(uri, "http://")
         not startswith(uri, "https://")
-        msg := "stack-uri must start with http:// or https://"
+        msg := "input-uri must start with http:// or https://"
       }
     queries:
       - data.workflow.deny[_]
@@ -49,7 +58,8 @@ hints:
 Valid input:
 
 ```yaml
-stack-uri: "https://earth-search.aws.element84.com/v1/collections/sentinel-1-grd"
+input-uri:
+  value: "https://earth-search.aws.element84.com/v1/collections/sentinel-1-grd"
 ```
 
 Run:

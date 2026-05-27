@@ -4,7 +4,7 @@ This guide shows how to validate a datetime input using `eoap:RegoPolicyHint`.
 
 ## 1. Define the input
 
-If your environment supports external schema references, use:
+Use:
 
 ```yaml
 inputs:
@@ -13,20 +13,7 @@ inputs:
     label: "Sensing time"
     doc: "Acquisition datetime"
     type:
-      - https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#Datetime
-      - "null"
-```
-
-If your CWL parser rejects external typed references in this context, use `string` and validate format via policy:
-
-```yaml
-inputs:
-  sensing-time:
-    id: sensing-time
-    label: "Sensing time"
-    doc: "Acquisition datetime"
-    type:
-      - string
+      - https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#DateTime
       - "null"
 ```
 
@@ -45,9 +32,17 @@ hints:
         msg := "sensing-time must be provided"
       }
 
-      # Basic RFC3339-like check: 2026-05-27T16:20:00Z
       deny[msg] {
-        t := input["sensing-time"]
+        st := input["sensing-time"]
+        st != null
+        st["value"] == null
+        msg := "sensing-time.value must be provided"
+      }
+
+      deny[msg] {
+        st := input["sensing-time"]
+        st != null
+        t := st["value"]
         t != null
         not regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", t)
         msg := "sensing-time must be UTC RFC3339 like YYYY-MM-DDTHH:MM:SSZ"
@@ -56,21 +51,23 @@ hints:
       - data.workflow.deny[_]
 ```
 
-## 3. Example inputs
+## 3. Validate with sample values
 
 Valid:
 
 ```yaml
-sensing-time: "2026-05-27T16:20:00Z"
+sensing-time:
+  value: "2026-05-27T16:20:00Z"
 ```
 
 Invalid:
 
 ```yaml
-sensing-time: "2026/05/27 16:20:00"
+sensing-time:
+  value: "2026/05/27 16:20:00"
 ```
 
-## 4. Run
+Run:
 
 ```bash
 assertions-mate path/to/workflow.cwl --inputs path/to/inputs.yaml
