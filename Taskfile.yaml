@@ -30,3 +30,10 @@ tasks:
     desc: Run linters
     cmds:
     - hatch run dev:lint
+
+  docs:serve:
+    desc: "Serve MkDocs site using hatch docs environment"
+    cmds:
+      - |
+        set -euo pipefail
+        HATCH_DATA_DIR="$PWD/.task/hatch" hatch run docs:serve

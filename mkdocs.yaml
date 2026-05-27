@@ -20,7 +20,7 @@ repo_name: Terradue/assertions-mate
 
 theme:
   logo: imgs/icon-eoap.png
-  name: material
+  name: readthedocs
 
   palette:
   - media: "(prefers-color-scheme: light)"
@@ -88,10 +88,48 @@ extra_javascript:
 - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
-- Introduction: index.md
-- HowTo:
-  - jsonschema.ipynb
-  - regopy.ipynb
-  - pygeofilter.ipynb
+- Home: index.md
+- Tutorials:
+  - First Validated Workflow: tutorials/first-validated-workflow.md
+- How-to Guides:
+  - JSON Schema Validation: jsonschema.ipynb
+  - Validate Polygon Parameter: how-to/validate-polygon-parameter.md
+  - Check Polygon Area (CQL2): how-to/validate-polygon-area-cql2.md
+  - Add CQL2 Area Function: how-to/add-cql2-polygon-area-function.md
+  - Validate URI Input: how-to/validate-uri-input.md
+  - Validate Datetime Input: how-to/validate-datetime-input.md
+  - Validate Date Range Input: how-to/validate-date-range-inputs.md
+  - Rego Policy Validation: regopy.ipynb
+  - CQL2 Filter Validation: pygeofilter.ipynb
+  - Validate Point In Polygon (CQL2): how-to/validate-point-in-polygon-cql2.md
+  - Validate Polygon Intersects AOI (CQL2): how-to/validate-polygon-intersects-aoi-cql2.md
+  - Validate BBOX Overlap (CQL2): how-to/validate-bbox-overlap-cql2.md
+  - Validate Required Property (Rego): how-to/validate-required-property-rego.md
+  - Validate Numeric Range (Rego): how-to/validate-numeric-range-rego.md
+  - Validate Array Cardinality (JSON Schema): how-to/validate-array-cardinality-jsonschema.md
+  - Combine Multiple Hints: how-to/combine-multiple-hints.md
+  - Author CQL2 JSON Encoding: how-to/author-cql2-json-encoding.md
+  - Use Packed vs Single CWL: how-to/use-packed-vs-single-cwl.md
+  - Troubleshoot Rego Invalid Literal: how-to/troubleshoot-rego-invalid-literal.md
+  - Troubleshoot CWL Loader Errors: how-to/troubleshoot-cwl-loader-errors.md
+  - Validate DateTime Window (Rego): how-to/validate-datetime-window-rego.md
+  - Validate URI Host Constraints (Rego): how-to/validate-uri-host-rego.md
+  - Create Reusable Rego Snippets: how-to/create-reusable-rego-snippets.md
+  - Test Hints With pytest: how-to/test-hints-with-pytest.md
+  - Validate Disjoint Geometries (CQL2): how-to/validate-disjoint-geometries-cql2.md
+  - Validate Optional Input (Rego): how-to/validate-optional-input-rego.md
+  - Validate Enum Values (JSON Schema): how-to/validate-enum-jsonschema.md
+  - Validate Cross-Field Dependency (Rego): how-to/validate-cross-field-dependency-rego.md
+  - Validate Conditional Required Field (Rego): how-to/validate-conditional-required-rego.md
+- Reference:
+  - CLI: reference/cli.md
+  - Assertion Hints: reference/hints.md
+  - Runtime Compatibility: reference/runtime-compatibility.md
+  - Errors: reference/errors.md
+- Explanation:
+  - Architecture: explanation/architecture.md
+  - Compatibility and Limitations: explanation/compatibility-and-limitations.md
+  - Testing and Reliability: explanation/testing-and-reliability.md
+  - Diataxis Mapping: explanation/diataxis-mapping.md
 
 copyright: <a href="https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg">License CC BY-SA 4.0</a>, by <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons</a>
