@@ -23,15 +23,17 @@ hints:
     module: |
       package workflow
 
-      deny contains "stack-uri must be provided" if {
+      deny[msg] {
         input["stack-uri"] == null
+        msg := "stack-uri must be provided"
       }
 
-      deny contains "stack-uri must start with http:// or https://" if {
+      deny[msg] {
         uri := input["stack-uri"]
         uri != null
         not startswith(uri, "http://")
         not startswith(uri, "https://")
+        msg := "stack-uri must start with http:// or https://"
       }
     queries:
       - data.workflow.deny[_]
