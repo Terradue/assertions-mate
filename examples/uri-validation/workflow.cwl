@@ -27,7 +27,16 @@ hints:
       }
 
       deny[msg] {
-        uri := input["input-uri"]
+        iu := input["input-uri"]
+        iu != null
+        iu["value"] == null
+        msg := "input-uri.value must be provided"
+      }
+
+      deny[msg] {
+        iu := input["input-uri"]
+        iu != null
+        uri := iu["value"]
         uri != null
         not startswith(uri, "http://")
         not startswith(uri, "https://")

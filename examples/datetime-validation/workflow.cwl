@@ -28,7 +28,16 @@ hints:
       }
 
       deny[msg] {
-        t := input["sensing-time"]
+        st := input["sensing-time"]
+        st != null
+        st["value"] == null
+        msg := "sensing-time.value must be provided"
+      }
+
+      deny[msg] {
+        st := input["sensing-time"]
+        st != null
+        t := st["value"]
         t != null
         not regex.match("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$", t)
         msg := "sensing-time must be UTC RFC3339 like YYYY-MM-DDTHH:MM:SSZ"
