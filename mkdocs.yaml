@@ -97,6 +97,7 @@ nav:
   - Check Polygon Area (CQL2): how-to/validate-polygon-area-cql2.md
   - Add CQL2 Area Function: how-to/add-cql2-polygon-area-function.md
   - Validate URI Input: how-to/validate-uri-input.md
+  - Validate Datetime Input: how-to/validate-datetime-input.md
   - Rego Policy Validation: regopy.ipynb
   - CQL2 Filter Validation: pygeofilter.ipynb
 - Reference:

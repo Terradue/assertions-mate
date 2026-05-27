@@ -1,1 +1,2 @@
-stack-uri: "not-a-uri"
+stack-uri: 
+  value: "not-a-uri"

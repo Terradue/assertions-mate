@@ -1,1 +1,2 @@
-stack-uri: "https://earth-search.aws.element84.com/v1/collections/sentinel-1-grd"
+stack-uri: 
+  value: "https://earth-search.aws.element84.com/v1/collections/sentinel-1-grd"

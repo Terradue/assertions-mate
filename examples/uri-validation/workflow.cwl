@@ -9,10 +9,8 @@ requirements:
     types:
       - $import: https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml
 inputs:
-  stack-uri:
-    id: stack-uri
-    label: "Snapping Stack URI"
-    doc: "SNAPPING Stack STAC Collection URI"
+  input-uri:
+    id: input-uri
     type:
       - https://raw.githubusercontent.com/eoap/schemas/main/string_format.yaml#URI
       - "null"
@@ -24,16 +22,16 @@ hints:
       package workflow
 
       deny[msg] {
-        input["stack-uri"] == null
-        msg := "stack-uri must be provided"
+        input["input-uri"] == null
+        msg := "input-uri must be provided"
       }
 
       deny[msg] {
-        uri := input["stack-uri"]
+        uri := input["input-uri"]
         uri != null
         not startswith(uri, "http://")
         not startswith(uri, "https://")
-        msg := "stack-uri must start with http:// or https://"
+        msg := "input-uri must start with http:// or https://"
       }
     queries:
       - data.workflow.deny[_]
