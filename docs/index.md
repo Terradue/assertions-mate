@@ -1,9 +1,19 @@
-# Assertions Framework API
+# Assertions Mate Documentation
 
-This is small Python APIs set that enables different CWL inputs validation layers, such as:
+`assertions-mate` validates CWL workflow inputs against assertion hints embedded in workflow definitions.
 
-- [JSON Schema](https://json-schema.org/);
-- [OPA's policy language (Rego)](https://www.openpolicyagent.org/docs)
-- [Common Query Language (CQL2)](https://www.ogc.org/standards/cql2/).
+It supports three validation families:
+- JSON Schema
+- Rego policy queries (OPA)
+- CQL2 filter expressions
 
-    This documentation is Work in Progress
+## Choose Your Path
+
+- New to the project? Start with the tutorial:
+  [Build your first validated workflow](tutorials/first-validated-workflow.md)
+- Need to solve a concrete task? Go to:
+  [How-to guides](jsonschema.ipynb)
+- Need exact behavior, classes, and CLI contract? See:
+  [Reference](reference/cli.md)
+- Want design context and rationale? Read:
+  [Explanation](explanation/architecture.md)

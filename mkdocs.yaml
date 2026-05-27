@@ -88,10 +88,20 @@ extra_javascript:
 - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
-- Introduction: index.md
-- HowTo:
-  - jsonschema.ipynb
-  - regopy.ipynb
-  - pygeofilter.ipynb
+- Home: index.md
+- Tutorials:
+  - First Validated Workflow: tutorials/first-validated-workflow.md
+- How-to Guides:
+  - JSON Schema Validation: jsonschema.ipynb
+  - Validate Polygon Parameter: how-to/validate-polygon-parameter.md
+  - Validate URI Input: how-to/validate-uri-input.md
+  - Rego Policy Validation: regopy.ipynb
+  - CQL2 Filter Validation: pygeofilter.ipynb
+- Reference:
+  - CLI: reference/cli.md
+  - Assertion Hints: reference/hints.md
+- Explanation:
+  - Architecture: explanation/architecture.md
+  - Diataxis Mapping: explanation/diataxis-mapping.md
 
 copyright: <a href="https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg">License CC BY-SA 4.0</a>, by <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons</a>
