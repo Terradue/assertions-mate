@@ -48,12 +48,14 @@ $graph:
       _type: "@vocab"
   - name: module
     type: string
-    doc: "The Rego module to load."
+    doc: |
+      The [Rego](https://www.openpolicyagent.org/docs/policy-language) module to load.
   - name: queries
     type:
       type: array
       items: string
-    doc: "List of Rego queries to evaluate."
+    doc: |
+      List of [Rego](https://www.openpolicyagent.org/docs/policy-language) queries to evaluate.
 
 - name: Cql2Query
   type: record
