@@ -24,6 +24,20 @@ tasks:
     - task: quality:test
     - task: quality:check
 
+  generate_schema_doc:
+    cmds:
+    - |
+      uv run \
+      --no-cache \
+      --no-project \
+      --with schema-salad \
+      schema-salad-doc \
+      --only 'http://oeap.github.io/schema#JSONSchemaHint' \
+      --only 'http://oeap.github.io/schema#RegoPolicyHint' \
+      --only 'http://oeap.github.io/schema#Cql2Query' \
+      --only 'http://oeap.github.io/schema#Cql2FilterHint' \
+      ./schemas/hints.yaml > ./docs/reference/hints_schema.html
+
   docs:serve:
     desc: "Serve MkDocs site using hatch docs environment"
     cmds:

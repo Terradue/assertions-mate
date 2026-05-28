@@ -22,7 +22,6 @@ Depending on runtime, newer syntax forms can fail with parser errors such as `In
 CQL2 spatial predicates operate reliably when payloads are coerced with helper functions:
 
 - `ensure_spatial(...)` for GeoJSON geometry objects
-- `ensure_bbox(...)` for bbox data
 
 Without coercion, backend exceptions can occur because predicates receive non-geometry objects.
 

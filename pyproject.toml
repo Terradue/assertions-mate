@@ -95,6 +95,7 @@ path = "/app/envs/appuser"
 description = "Test environment"
 dependencies = [
   "pytest>=8.0",
+  "pyaml",
 ]
 
 [[tool.hatch.envs.test.matrix]]

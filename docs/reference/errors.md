@@ -47,5 +47,4 @@ Typical causes:
 
 Mitigation:
 - use `ensure_spatial(...)` for GeoJSON geometry payloads
-- use `ensure_bbox(...)` for bbox payloads
 - prefer validated example patterns from `docs/how-to/`

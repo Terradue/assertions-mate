@@ -23,7 +23,7 @@ $graph:
 
 - name: JSONSchemaHint
   type: record
-  extends: cwl:ProcessHint
+  extends: cwl:ProcessRequirement
   inVocab: false
   doc: "Indicates that a process requires a JSON Schema validation."
   fields:
@@ -36,7 +36,7 @@ $graph:
 
 - name: RegoPolicyHint
   type: record
-  extends: cwl:ProcessHint
+  extends: cwl:ProcessRequirement
   inVocab: false
   doc: "Indicates that a process requires a Rego Policy validation."
   fields:
@@ -62,14 +62,18 @@ $graph:
   fields:
   - name: id
     type: string
+    doc: "A unique assertion identified."
   - name: cql2
     type: string
+    doc: |
+      The [Common Query Language (CQL2)](https://www.ogc.org/standards/cql2/) text or JSON encoded filter.
   - name: message
     type: string
+    doc: "The reported error message, when the assertion fails." 
 
 - name: Cql2FilterHint
   type: record
-  extends: cwl:ProcessHint
+  extends: cwl:ProcessRequirement
   inVocab: false
   doc: "Indicates that a process requires a CQL2-based validation."
   fields:
@@ -79,8 +83,12 @@ $graph:
     jsonldPredicate:
       _id: "@type"
       _type: "@vocab"
+  - name: custom_functions
+    type: string?
+    doc: "Optional Python custom function(s) definition that can be invoked in the evalautor"
   - name: queries
     type:
       type: array
       items: Cql2Query   # or 'string' if you want plain strings
-    doc: "CQL2 query definitions to apply."
+    doc: |
+      The [Common Query Language (CQL2)](https://www.ogc.org/standards/cql2/) filters.

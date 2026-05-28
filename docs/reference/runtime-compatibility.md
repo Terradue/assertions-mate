@@ -33,8 +33,6 @@ This newer style can raise `Invalid literal` parser errors depending on `regopy`
 - Spatial predicates over GeoJSON payloads should use `ensure_spatial(...)` coercion:
   - `s_within(ensure_spatial(point), ensure_spatial(aoi))`
   - `s_intersects(ensure_spatial(a), ensure_spatial(b))`
-- BBOX predicates should use `ensure_bbox(...)`:
-  - `s_intersects(ensure_bbox(b1), ensure_bbox(b2))`
 
 ## CQL2 JSON From YAML
 

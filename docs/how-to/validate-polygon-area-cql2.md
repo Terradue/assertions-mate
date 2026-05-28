@@ -10,14 +10,12 @@ Not with the current implementation as-is.
 
 `assertions-mate` uses `pygeofilter` with this evaluator setup:
 
-- only one custom function is registered: `ensure_bbox(...)`
 - property access on function return values (such as `.area`) is not supported by the CQL2 parser used here
 - no built-in `area(...)` function is registered
 
 So expressions like these fail:
 
 - `area(aoi) < 1000`
-- `ensure_bbox(aoi).area < 1000`
 
 ## What would make it feasible
 

@@ -1,13 +1,10 @@
-from assertions_mate import Cql2Query
-from assertions_mate.cql2_validator import Cql2Validator, ensure_bbox
+from pathlib import Path
 
+import yaml
+from cwl_utils.parser import load_document_by_uri
 
-def test_ensure_bbox_accepts_list_and_string():
-    bbox_from_list = ensure_bbox([0.0, 0.0, 1.0, 1.0])
-    bbox_from_string = ensure_bbox("0,0,1,1")
-
-    assert bbox_from_list.bounds == (0.0, 0.0, 1.0, 1.0)
-    assert bbox_from_string.bounds == (0.0, 0.0, 1.0, 1.0)
+from assertions_mate import Cql2FilterHint, Cql2Query, extract_assertion_hints
+from assertions_mate.cql2_validator import Cql2Validator
 
 
 def test_validate_inputs_reports_business_rule_violation_when_predicate_fails():
@@ -49,3 +46,41 @@ def test_validate_inputs_reports_unrecognized_filter_format():
     assert len(result.errors) == 1
     assert result.errors[0].pointer == "rule-2"
     assert "unrecognizible format" in result.errors[0].detail
+
+
+def test_validate_inputs_executes_ensure_bbox_custom_function_from_cwl_hint():
+    example_dir = (
+        Path(__file__).resolve().parents[1] / "examples" / "bbox-overlap-validation"
+    )
+    workflow = load_document_by_uri(
+        path=example_dir / "workflow.cwl",
+        load_all=True,
+    )
+    hints = [
+        hint
+        for hint in extract_assertion_hints(workflow)
+        if isinstance(hint, Cql2FilterHint)
+    ]
+
+    assert len(hints) == 1
+    assert hints[0].custom_functions is not None
+    assert "ensure_bbox" in hints[0].custom_functions
+
+    validator = hints[0].validator()
+
+    with (example_dir / "inputs-valid.yaml").open(encoding="utf-8") as input_stream:
+        valid_inputs = yaml.safe_load(input_stream)
+
+    with (example_dir / "inputs-invalid.yaml").open(encoding="utf-8") as input_stream:
+        invalid_inputs = yaml.safe_load(input_stream)
+
+    assert validator.validate_inputs(valid_inputs) is None
+
+    result = validator.validate_inputs(invalid_inputs)
+
+    assert result is not None
+    assert result.status == 422
+    assert result.errors is not None
+    assert len(result.errors) == 1
+    assert result.errors[0].pointer == "bbox-overlap"
+    assert result.errors[0].detail == "bbox_1 must overlap bbox_2"

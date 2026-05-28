@@ -16,6 +16,7 @@ This can produce false-negative validations because rules read missing keys.
 ## `eoap:JSONSchemaHint`
 
 - Purpose: validate input payload with JSON Schema
+- [Schema](hints_schema.html#JSONSchemaHint)
 - Fields:
   - `json_schema` (object): JSON Schema definition for the input payload
 - Notes:
@@ -25,6 +26,7 @@ This can produce false-negative validations because rules read missing keys.
 ## `eoap:RegoPolicyHint`
 
 - Purpose: evaluate business or policy constraints with Rego
+- [Schema](hints_schema.html#RegoPolicyHint)
 - Fields:
   - `module` (string): Rego module source text
   - `queries` (list of string): query expressions to evaluate
@@ -49,11 +51,10 @@ data.workflow.deny[_]
 ## `eoap:Cql2FilterHint`
 
 - Purpose: enforce boolean checks expressed as CQL2 filters
+- [Schema](hints_schema.html#Cql2FilterHint)
 - Fields:
+  - `custom_functions` (string): Optional Python custom function(s) definition
   - `queries` (list):
     - `id` (string): rule identifier
     - `cql2` (string or object): CQL2 text or CQL2 JSON
     - `message` (string): error message when filter evaluates to false
-- Spatial usage notes:
-  - use `ensure_spatial(...)` when passing GeoJSON geometry objects to spatial predicates
-  - use `ensure_bbox(...)` for bbox strings/lists/objects

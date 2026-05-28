@@ -21,24 +21,8 @@ from .error_models import (
 from pygeofilter.backends.native.evaluate import NativeEvaluator
 from pygeofilter.parsers.cql2_text import parse as parse_cql2_text
 from pygeofilter.parsers.cql2_json import parse as parse_cql2_json
-from shapely import geometry
-from typing import Any, List, Mapping, Union
+from typing import Any, List, Mapping
 from numbers import Integral, Real
-
-
-def ensure_bbox(input: Union[Mapping[str, Any], List[float], str]):
-    value = []
-
-    if isinstance(input, dict):
-        value = input["bbox"]
-        if not value:
-            raise ValueError(f"Input {input} doesn't have a 'bbox' property")
-    elif isinstance(input, str):
-        value = [float(x) for x in str(input).split(",")]
-    else:
-        value = input
-
-    return geometry.box(*value)
 
 
 def _to_builtin(value: Any) -> Any:
@@ -59,9 +43,14 @@ def _to_builtin(value: Any) -> Any:
 
 
 class Cql2Validator(BaseValidator):
-    def __init__(self, queries: List[Cql2Query]):
+    def __init__(self, queries: List[Cql2Query], custom_functions: str | None = None):
+        function_map={}
+
+        if custom_functions:
+            exec(custom_functions, function_map)
+
         self.evaluator = NativeEvaluator(
-            function_map={"ensure_bbox": ensure_bbox}, use_getattr=False
+            function_map=function_map, use_getattr=False
         )
 
         self.queries = queries

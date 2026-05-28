@@ -123,7 +123,9 @@ nav:
   - Validate Conditional Required Field (Rego): how-to/validate-conditional-required-rego.md
 - Reference:
   - CLI: reference/cli.md
-  - Assertion Hints: reference/hints.md
+  - Assertion Hints:
+    - reference/hints.md
+    - Schema: reference/hints_schema.html
   - Runtime Compatibility: reference/runtime-compatibility.md
   - Errors: reference/errors.md
 - Explanation:
