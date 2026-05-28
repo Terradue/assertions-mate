@@ -44,14 +44,12 @@ def _to_builtin(value: Any) -> Any:
 
 class Cql2Validator(BaseValidator):
     def __init__(self, queries: List[Cql2Query], custom_functions: str | None = None):
-        function_map={}
+        function_map = {}
 
         if custom_functions:
             exec(custom_functions, function_map)
 
-        self.evaluator = NativeEvaluator(
-            function_map=function_map, use_getattr=False
-        )
+        self.evaluator = NativeEvaluator(function_map=function_map, use_getattr=False)
 
         self.queries = queries
 

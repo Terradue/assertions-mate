@@ -117,7 +117,9 @@ class Cql2FilterHint(AssertionHint):
     def validator(self) -> BaseValidator:
         from .cql2_validator import Cql2Validator
 
-        return Cql2Validator(custom_functions=self.custom_functions, queries=self.queries)
+        return Cql2Validator(
+            custom_functions=self.custom_functions, queries=self.queries
+        )
 
 
 def _get_assertion_hint_by_name(
