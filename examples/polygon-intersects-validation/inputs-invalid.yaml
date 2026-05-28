@@ -1,0 +1,16 @@
+aoi:
+  type: Polygon
+  coordinates:
+    - - [0,0]
+      - [1,0]
+      - [1,1]
+      - [0,1]
+      - [0,0]
+candidate:
+  type: Polygon
+  coordinates:
+    - - [2,2]
+      - [3,2]
+      - [3,3]
+      - [2,3]
+      - [2,2]

@@ -21,30 +21,35 @@ from .error_models import (
 from pygeofilter.backends.native.evaluate import NativeEvaluator
 from pygeofilter.parsers.cql2_text import parse as parse_cql2_text
 from pygeofilter.parsers.cql2_json import parse as parse_cql2_json
-from shapely import geometry
-from typing import Any, List, Mapping, Union
+from typing import Any, List, Mapping
+from numbers import Integral, Real
 
 
-def ensure_bbox(input: Union[Mapping[str, Any], List[float], str]):
-    value = []
-
-    if isinstance(input, dict):
-        value = input["bbox"]
-        if not value:
-            raise ValueError(f"Input {input} doesn't have a 'bbox' property")
-    elif isinstance(input, str):
-        value = [float(x) for x in str(input).split(",")]
-    else:
-        value = input
-
-    return geometry.box(*value)
+def _to_builtin(value: Any) -> Any:
+    """Normalize YAML scalar wrappers to plain Python types."""
+    if isinstance(value, Mapping):
+        return {str(k): _to_builtin(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_to_builtin(v) for v in value]
+    if isinstance(value, bool):
+        return bool(value)
+    if isinstance(value, str):
+        return str(value)
+    if isinstance(value, Integral):
+        return int(value)
+    if isinstance(value, Real):
+        return float(value)
+    return value
 
 
 class Cql2Validator(BaseValidator):
-    def __init__(self, queries: List[Cql2Query]):
-        self.evaluator = NativeEvaluator(
-            function_map={"ensure_bbox": ensure_bbox}, use_getattr=False
-        )
+    def __init__(self, queries: List[Cql2Query], custom_functions: str | None = None):
+        function_map = {}
+
+        if custom_functions:
+            exec(custom_functions, function_map)
+
+        self.evaluator = NativeEvaluator(function_map=function_map, use_getattr=False)
 
         self.queries = queries
 
@@ -66,7 +71,7 @@ class Cql2Validator(BaseValidator):
                     )
             elif isinstance(filter.cql2, dict):
                 try:
-                    ast = parse_cql2_json(filter.cql2)
+                    ast = parse_cql2_json(_to_builtin(filter.cql2))
                 except Exception as e:
                     errors_list.append(
                         ErrorDetail(

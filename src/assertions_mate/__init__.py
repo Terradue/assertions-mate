@@ -103,6 +103,7 @@ class Cql2FilterHint(AssertionHint):
     def get_annotation_name() -> str:
         return "eoap.ogc.org/inputs-cql2-filter"
 
+    custom_functions: str | None = None
     queries: List[Cql2Query]
 
     @property
@@ -116,7 +117,9 @@ class Cql2FilterHint(AssertionHint):
     def validator(self) -> BaseValidator:
         from .cql2_validator import Cql2Validator
 
-        return Cql2Validator(queries=self.queries)
+        return Cql2Validator(
+            custom_functions=self.custom_functions, queries=self.queries
+        )
 
 
 def _get_assertion_hint_by_name(
@@ -138,7 +141,6 @@ def _get_assertion_hint_by_name(
             logger.error(
                 f"An error occurred while mapping {fqn_hint_kind} to {AssertionHint.__name__}: {e}"
             )
-            return None
 
     return None
 

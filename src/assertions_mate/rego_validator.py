@@ -20,7 +20,7 @@ from typing import Any, List, Mapping
 
 class RegoValidator(BaseValidator):
     def __init__(self, module: str, queries: List[str]):
-        self.rego = Interpreter(True)
+        self.rego = Interpreter()
         self.rego.add_module("workflow", module)
         self.queries = queries
 

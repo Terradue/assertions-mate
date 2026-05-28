@@ -7,3 +7,5 @@ openapi_bundled.yaml
 *.pyc
 schema.yaml
 src/assertions_mate/__pycache__
+.task
+.vscode

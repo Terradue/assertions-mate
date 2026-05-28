@@ -14,19 +14,33 @@
 
 version: '3'
 
+includes:
+  quality: https://raw.githubusercontent.com/Terradue/taskfile-utils/refs/heads/main/quality.yaml
+
 tasks:
 
-  test:
-    desc: Run tests
+  default:
     cmds:
-    - hatch run test:test-show-setup
+    - task: quality:test
+    - task: quality:check
 
-  check:
-    desc: Run code quality checks
+  generate_schema_doc:
     cmds:
-    - hatch run dev:check
+    - |
+      uv run \
+      --no-cache \
+      --no-project \
+      --with schema-salad \
+      schema-salad-doc \
+      --only 'http://oeap.github.io/schema#JSONSchemaHint' \
+      --only 'http://oeap.github.io/schema#RegoPolicyHint' \
+      --only 'http://oeap.github.io/schema#Cql2Query' \
+      --only 'http://oeap.github.io/schema#Cql2FilterHint' \
+      ./schemas/hints.yaml > ./docs/reference/hints_schema.html
 
-  lint:
-    desc: Run linters
+  docs:serve:
+    desc: "Serve MkDocs site using hatch docs environment"
     cmds:
-    - hatch run dev:lint
+      - |
+        set -euo pipefail
+        HATCH_DATA_DIR="$PWD/.task/hatch" hatch run docs:serve

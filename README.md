@@ -9,6 +9,12 @@ It adds policy and rule checks on top of CWL typing by supporting:
 
 Documentation site: https://terradue.github.io/assertions-mate/
 
+Documentation follows the Diataxis framework:
+- Tutorials: learning-oriented walkthroughs
+- How-to guides: task-focused recipes
+- Reference: technical contracts and interfaces
+- Explanation: design rationale and concepts
+
 ## Why Use It
 
 When a CWL workflow needs stricter runtime checks (business rules, policy constraints, geospatial conditions), `assertions-mate` lets you define them as workflow hints and evaluate them against an input payload before execution.

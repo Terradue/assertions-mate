@@ -95,6 +95,7 @@ path = "/app/envs/appuser"
 description = "Test environment"
 dependencies = [
   "pytest>=8.0",
+  "pyaml",
 ]
 
 [[tool.hatch.envs.test.matrix]]
@@ -117,3 +118,12 @@ dependencies = [
 [tool.hatch.envs.dev.scripts]
 lint = "ruff format ."
 check = "ruff check --fix"
+
+
+[tool.hatch.envs.docs]
+dependencies = [
+]
+
+[tool.hatch.envs.docs.scripts]
+serve = "mkdocs serve"
+build = "mkdocs build"
