@@ -25,17 +25,15 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "jsonschema",
+  "click==8.3.3",
+  "cwl-utils==0.41",
+  "cwl2ogc==0.18.0",
+  "jsonschema==4.26.0",
+  "loguru==0.7.3",
+  "pydantic==2.12.5",
+  "pygeofilter[backend-native]==0.3.3",
+  "PyYAML==6.0.3",
   "regopy==0.4.6",
-  "pygeofilter",
-  "pygeofilter[backend-native]",
-  "pystac-client",
-  "shapely",
-  "pydantic",
-  "loguru",
-  "click",
-  "cwl-utils",
-  "cwl2ogc>=0.10.0"
 ]
 
 [project.urls]
@@ -77,15 +75,6 @@ exclude_lines = [
 
 [tool.hatch.envs.default]
 skip-install = false
-dependencies = [
-  "jsonschema",
-  "regopy",
-  "pygeofilter",
-  "pygeofilter[backend-native]",
-  "pystac-client",
-  "shapely",
-  "pydantic"
-]
 
 [tool.hatch.envs.prod]
 path = "/app/envs/appuser"
@@ -95,7 +84,6 @@ path = "/app/envs/appuser"
 description = "Test environment"
 dependencies = [
   "pytest>=8.0",
-  "pyaml",
 ]
 
 [[tool.hatch.envs.test.matrix]]
