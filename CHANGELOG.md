@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.6.0] - 2026-10-06
+
+### Fixed
+
+- Unresolvable $ref entities in JSON Schema
+
 ## [0.5.0] - 2026-08-06
 
 ### Changed
@@ -75,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed API documentation generation and schema behavior according to canonical CWL practices.
 
 [Unreleased]: https://github.com/Terradue/assertions-mate/compare/v0.5.0...develop
+[0.6.0]: https://github.com/Terradue/assertions-mate/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Terradue/assertions-mate/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Terradue/assertions-mate/compare/v0.2.0...v0.4.0
 [0.2.0]: https://github.com/Terradue/assertions-mate/releases/tag/v0.2.0
