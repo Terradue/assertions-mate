@@ -93,9 +93,7 @@ class JSONSchemaRegistry:
             or "json"
         )
         formats = [preferred_format] + [
-            candidate
-            for candidate in ("json", "yaml")
-            if candidate != preferred_format
+            candidate for candidate in ("json", "yaml") if candidate != preferred_format
         ]
 
         last_error: Exception | None = None
