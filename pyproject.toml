@@ -39,7 +39,7 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Terradue/assertions-mate#README.md"
+Documentation = "https://terradue.github.io/assertions-mate/"
 Issues = "https://github.com/Terradue/assertions-mate/issues"
 Source = "https://github.com/Terradue/assertions-mate"
 
