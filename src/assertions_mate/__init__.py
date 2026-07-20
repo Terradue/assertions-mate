@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .error_models import ProblemDetails
+from eoap_problems_registry import ProblemDetails
 from abc import ABC, abstractmethod
 from cwl2ogc import BaseCWLtypes2OGCConverter
 from loguru import logger

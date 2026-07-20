@@ -54,6 +54,7 @@ $graph:
     type:
       type: array
       items: string
+    jsonldPredicate: "http://oeap.github.io/schema#queries"
     doc: |
       List of [Rego](https://www.openpolicyagent.org/docs/policy-language) queries to evaluate.
 
@@ -62,11 +63,18 @@ $graph:
   inVocab: false
   doc: "Represents a single CQL2 query and an associated message."
   fields:
+  - name: class
+    type: string
+    doc: "Always 'Cql2Query'"
+    jsonldPredicate:
+      _id: "@type"
+      _type: "@vocab"
   - name: id
     type: string
     doc: "A unique assertion identified."
+    jsonldPredicate: "@id"
   - name: cql2
-    type: string
+    type: Any
     doc: |
       The [Common Query Language (CQL2)](https://www.ogc.org/standards/cql2/) text or JSON encoded filter.
   - name: message
@@ -92,5 +100,6 @@ $graph:
     type:
       type: array
       items: Cql2Query   # or 'string' if you want plain strings
+    jsonldPredicate: "http://oeap.github.io/schema#queries"
     doc: |
       The [Common Query Language (CQL2)](https://www.ogc.org/standards/cql2/) filters.

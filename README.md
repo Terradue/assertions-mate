@@ -1,5 +1,8 @@
 # Assertions Mate
 
+[![PyPI - Version](https://img.shields.io/pypi/v/assertions-mate.svg)](https://pypi.org/project/assertions-mate)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/assertions-mate.svg)](https://pypi.org/project/assertions-mate)
+
 `assertions-mate` validates CWL workflow inputs against assertion hints embedded in the workflow definition.
 
 It adds policy and rule checks on top of CWL typing by supporting:
@@ -117,4 +120,4 @@ task check
 
 ## License
 
-Apache License 2.0. See `LICENSE`.
+[![Apache License, Version 2.0](https://img.shields.io/badge/license-Apache%20License%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)

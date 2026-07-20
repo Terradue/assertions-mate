@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from . import BaseValidator, Cql2Query
-from .error_models import (
+from eoap_problems_registry import (
     BusinessRuleViolation,
     ErrorDetail,
     ProblemDetails,

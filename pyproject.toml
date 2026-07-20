@@ -30,16 +30,17 @@ dependencies = [
   "cwl2ogc==0.18.0",
   "jsonschema==4.26.0",
   "loguru==0.7.3",
-  "pydantic==2.12.5",
+  "pydantic==2.13.4",
   "pygeofilter[backend-native]==0.3.3",
   "PyYAML==6.0.3",
-  "regopy==0.4.6",
+  "regopy==1.5.2",
   "requests==2.32.5",
   "session-adapters==0.3.0",
+  "eoap-problems-registry==1.0.0"
 ]
 
 [project.urls]
-Documentation = "https://github.com/Terradue/assertions-mate#README.md"
+Documentation = "https://terradue.github.io/assertions-mate/"
 Issues = "https://github.com/Terradue/assertions-mate/issues"
 Source = "https://github.com/Terradue/assertions-mate"
 
