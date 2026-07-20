@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.7.0] - 2027-07-20
+
+### Changed
+
+- Custom `error_models` replaced by [eoap-problems-registry](https://pypi.org/project/eoap-problems-registry/)
+
+### Fixed
+
 - `Cql2Query#cql2` definition in schema must reflect `Any` since can assume also a `Mapping` value.
 - Fixed `Cql2Query#id` definition in schema of `JSON-LD`.
 - Disambiguation of `Cql2FilterHint#queries` and `RegoPolicyHint#queries` in schema.

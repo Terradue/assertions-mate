@@ -20,6 +20,11 @@ from urllib.parse import urlparse
 
 import requests
 import yaml
+from eoap_problems_registry import (
+    ErrorDetail,
+    InvalidBodyPropertyFormat,
+    ProblemDetails,
+)
 from jsonschema import Draft202012Validator
 from referencing import Registry as ReferencingRegistry
 from referencing import Resource
@@ -30,7 +35,6 @@ from session_adapters.oci_adapter import OCIAdapter
 from session_adapters.s3_adapter import S3Adapter
 
 from . import BaseValidator
-from .error_models import ErrorDetail, InvalidBodyPropertyFormat, ProblemDetails
 
 
 _REMOTE_SCHEMA_TIMEOUT_SECONDS = 10
