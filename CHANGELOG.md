@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.8.0] - 2027-07-21
+
+### Changed
+
+- `eoap-problems-registry` dependency version bump.
+
 ## [0.7.0] - 2027-07-20
 
 ### Changed
@@ -92,7 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed documentation build issues around PlantUML and MkDocs plugin configuration.
 - Fixed API documentation generation and schema behavior according to canonical CWL practices.
 
-[Unreleased]: https://github.com/Terradue/assertions-mate/compare/v0.6.0...develop
+[Unreleased]: https://github.com/Terradue/assertions-mate/compare/v0.8.0...develop
+[0.8.0]: https://github.com/Terradue/assertions-mate/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Terradue/assertions-mate/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Terradue/assertions-mate/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Terradue/assertions-mate/compare/v0.4.0...v0.5.0
