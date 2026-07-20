@@ -36,7 +36,7 @@ dependencies = [
   "regopy==1.5.2",
   "requests==2.32.5",
   "session-adapters==0.3.0",
-  "eoap-problems-registry==1.0.0"
+  "eoap-problems-registry==1.0.1"
 ]
 
 [project.urls]
