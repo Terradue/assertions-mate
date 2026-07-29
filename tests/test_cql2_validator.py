@@ -14,8 +14,8 @@
 
 from pathlib import Path
 
-import yaml
 from cwl_utils.parser import load_document_by_uri
+from ruamel.yaml import YAML
 
 from assertions_mate import Cql2FilterHint, Cql2Query, extract_assertion_hints
 from assertions_mate.cql2_validator import Cql2Validator
@@ -82,11 +82,13 @@ def test_validate_inputs_executes_ensure_bbox_custom_function_from_cwl_hint():
 
     validator = hints[0].validator()
 
+    yaml = YAML()
+
     with (example_dir / "inputs-valid.yaml").open(encoding="utf-8") as input_stream:
-        valid_inputs = yaml.safe_load(input_stream)
+        valid_inputs = yaml.load(input_stream)
 
     with (example_dir / "inputs-invalid.yaml").open(encoding="utf-8") as input_stream:
-        invalid_inputs = yaml.safe_load(input_stream)
+        invalid_inputs = yaml.load(input_stream)
 
     assert validator.validate_inputs(valid_inputs) is None
 

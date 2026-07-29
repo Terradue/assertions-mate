@@ -14,13 +14,11 @@
 
 import json
 from collections.abc import Mapping
-from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
 import requests
-import yaml
 from eoap_problems_registry import (
     ErrorDetail,
     InvalidBodyPropertyFormat,
@@ -31,6 +29,7 @@ from referencing import Registry as ReferencingRegistry
 from referencing import Resource
 from referencing.exceptions import NoSuchResource
 from referencing.jsonschema import DRAFT202012
+from ruamel.yaml import YAML
 from session_adapters.file_adapter import FileAdapter  # type: ignore[import-untyped]
 from session_adapters.oci_adapter import OCIAdapter  # type: ignore[import-untyped]
 from session_adapters.s3_adapter import S3Adapter  # type: ignore[import-untyped]
@@ -106,8 +105,8 @@ class JSONSchemaRegistry:
                 if schema_format == "json":
                     return json.loads(text)
 
-                return yaml.safe_load(text)
-            except (JSONDecodeError, yaml.YAMLError) as error:
+                return YAML().load(text)
+            except Exception as error:
                 last_error = error
 
         raise ValueError(f"Unable to parse JSON Schema from {uri}") from last_error
