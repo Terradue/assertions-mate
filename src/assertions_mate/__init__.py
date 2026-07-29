@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from eoap_problems_registry import ProblemDetails
 from abc import ABC, abstractmethod
-from cwl2ogc import BaseCWLtypes2OGCConverter
+from collections.abc import Mapping
+from typing import Any
+
+from cwl2ogc import BaseCWLtypes2OGCConverter  # type: ignore[import-untyped]
+from eoap_problems_registry import ProblemDetails
 from loguru import logger
 from pydantic import BaseModel, computed_field, model_serializer
-from typing import Any, List, Mapping, Optional
 
 
 class BaseValidator(ABC):
@@ -27,7 +29,7 @@ class BaseValidator(ABC):
 
 
 class AssertionHint(BaseModel):
-    parent_workflow: Optional[Any] = None
+    parent_workflow: Any | None = None
 
     @property
     @computed_field
@@ -76,7 +78,7 @@ class RegoPolicyHint(AssertionHint):
         return "eoap.ogc.org/inputs-rego-policy"
 
     module: str
-    queries: List[str]
+    queries: list[str]
 
     @property
     def annotation(self) -> str:
@@ -104,7 +106,7 @@ class Cql2FilterHint(AssertionHint):
         return "eoap.ogc.org/inputs-cql2-filter"
 
     custom_functions: str | None = None
-    queries: List[Cql2Query]
+    queries: list[Cql2Query]
 
     @property
     def annotation(self) -> str:
@@ -145,7 +147,7 @@ def _get_assertion_hint_by_name(
     return None
 
 
-def extract_assertion_hints(workflow: Any) -> List[AssertionHint]:
+def extract_assertion_hints(workflow: Any) -> list[AssertionHint]:
     assertion_hints = []
 
     if workflow.hints:

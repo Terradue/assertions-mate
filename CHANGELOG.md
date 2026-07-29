@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Stronger code chekers with Ruff+McCabe & Bandit
+
 ### Changed
+
+- dependencies bump:
+  - `click` to `8.4.2`.
+  - `cwl-utils` to `0.42`.
+  - `cwl2ogc` to `0.19.0`.
+  - `pygeofilter[backend-native]` to `0.4.0`.
+  - `requests` to `2.34.2`.
+  - `session-adapters` to `0.4.0`.
+  - `eoap-problems-registry` to `1.2.0`.
+
+- `click` dependency moved to `optional-dependencies`
 
 ### Deprecated
 

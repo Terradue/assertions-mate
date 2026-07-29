@@ -25,18 +25,17 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "click==8.3.3",
-  "cwl-utils==0.41",
-  "cwl2ogc==0.18.0",
+  "cwl-utils==0.42",
+  "cwl2ogc==0.19.0",
   "jsonschema==4.26.0",
   "loguru==0.7.3",
   "pydantic==2.13.4",
-  "pygeofilter[backend-native]==0.3.3",
+  "pygeofilter[backend-native]==0.4.0",
   "PyYAML==6.0.3",
   "regopy==1.5.2",
-  "requests==2.32.5",
-  "session-adapters==0.3.0",
-  "eoap-problems-registry==1.0.1"
+  "requests==2.34.2",
+  "session-adapters==0.4.0",
+  "eoap-problems-registry==1.2.0"
 ]
 
 [project.urls]
@@ -44,18 +43,16 @@ Documentation = "https://terradue.github.io/assertions-mate/"
 Issues = "https://github.com/Terradue/assertions-mate/issues"
 Source = "https://github.com/Terradue/assertions-mate"
 
+[project.optional-dependencies]
+cli = [
+  "click==8.4.2",
+]
+
 [project.scripts]
 assertions-mate = "assertions_mate.cli:main"
 
 [tool.hatch.version]
 path = "src/assertions_mate/__about__.py"
-
-[tool.hatch.envs.types]
-extra-dependencies = [
-  "mypy>=1.0.0",
-]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/assertions_mate tests}"
 
 [tool.coverage.run]
 source_pkgs = ["assertions_mate", "tests"]
@@ -84,37 +81,69 @@ path = "/app/envs/appuser"
 
 
 [tool.hatch.envs.test]
-description = "Test environment"
+skip-install = false
 dependencies = [
-  "pytest>=8.0",
+  "pytest>=8.4,<10",
+  "pytest-cov>=6.2,<8",
+]
+
+[tool.hatch.envs.test.scripts]
+test = "pytest {args:tests}"
+testv = "pytest --verbose {args:tests}"
+test-cov = "pytest --cov=assertions_mate --cov-report=term-missing {args:tests}"
+test-show-setup = "pytest --setup-show"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+  "--strict-config",
+  "--strict-markers",
 ]
 
 [[tool.hatch.envs.test.matrix]]
 python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
-[tool.hatch.envs.test.scripts]
-test = "pytest"
-test-q = "pytest -q"
-test-cov = "pytest --cov=session_adapters"
-test-show-setup = "pytest --setup-show"
-
 [tool.hatch.envs.dev]
-description = "Development environment"
+skip-install = false
 dependencies = [
-  "pytest>=8.0",
-  "ruff",
+  "mypy>=2.3.0",
+  "ruff>=0.16.0",
+  "bandit>=1.9.4",
 ]
 
+[tool.ruff.lint]
+# Start with the essential rules
+select = [
+  "F",    # Pyflakes (Critical for bugs)
+  "E",    # pycodestyle Errors
+  "W",    # pycodestyle Warnings
+  "I",    # isort (Import sorting)
+  "UP",   # pyupgrade (Modern syntax)
+  "B",    # flake8-bugbear (Common bugs)
+  "C4",   # flake8-comprehensions
+  "SIM",  # flake8-simplify
+  "FA",   # flake8-future-annotations
+  "TC",   # flake8-type-checking
+  "PTH",  # flake8-use-pathlib
+  "RET",  # flake8-return
+  "C90",  # McCabe Complexity (Enables C901)
+]
+
+# Ignore rules that conflict with the formatter (Ruff Format/Black)
+ignore = [
+  "E501", # Line too long (handled by formatter)
+  "W191", # Tab indentation (handled by formatter)
+  "E111", # Indentation issues (handled by formatter)
+  "E114", # Indentation issues (handled by formatter)
+  "E117", # Over-indented (handled by formatter)
+]
+
+[tool.ruff.lint.mccabe]
+# Flag errors (C901) whenever complexity exceeds 10 (default is 10)
+max-complexity = 10
 
 [tool.hatch.envs.dev.scripts]
-lint = "ruff format ."
-check = "ruff check --fix"
-
-
-[tool.hatch.envs.docs]
-dependencies = [
-]
-
-[tool.hatch.envs.docs.scripts]
-serve = "mkdocs serve"
-build = "mkdocs build"
+typecheck = "mypy --install-types --non-interactive {args:src tests}"
+lint = "ruff format {args:src tests}"
+check = "ruff check --fix {args:src tests}"
+security = "bandit -r {args:src}"
