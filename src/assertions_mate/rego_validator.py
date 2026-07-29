@@ -17,6 +17,7 @@ from typing import Any
 
 from eoap_problems_registry import BusinessRuleViolation, ErrorDetail, ProblemDetails
 from regopy import Interpreter  # type: ignore[import-untyped]
+from regopy.interpreter import Input  # type: ignore[import-untyped]
 
 from . import BaseValidator
 
@@ -30,7 +31,7 @@ class RegoValidator(BaseValidator):
     def validate_inputs(self, data: Mapping[str, Any]) -> ProblemDetails | None:
         errors_list = []
 
-        self.rego.set_input(data)
+        self.rego.set_input(Input(data))
 
         for query in self.queries:
             for result in self.rego.query(query):
