@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- `PyYAML` replaced by `ruamel.yaml` already used by `cwl-utils`. 
+
 ### Fixed
 
 ## [0.8.0] - 2027-07-21

@@ -31,9 +31,9 @@ dependencies = [
   "loguru==0.7.3",
   "pydantic==2.13.4",
   "pygeofilter[backend-native]==0.4.0",
-  "PyYAML==6.0.3",
   "regopy==1.5.2",
   "requests==2.34.2",
+  "ruamel.yaml >= 0.17.6, < 0.20", # cwl-utils 0.42 depends on ruamel.yaml<0.20 and >=0.17.6
   "session-adapters==0.4.0",
   "eoap-problems-registry==1.2.0"
 ]
