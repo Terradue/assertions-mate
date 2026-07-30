@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import extract_assertion_hints
-from cwl_utils.parser import load_document_by_uri
-from cwl_utils.parser.cwl_v1_2 import Workflow
+import time
+from collections.abc import Mapping
 from datetime import datetime
-from loguru import logger
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 import click
-import yaml
-import time
+from cwl_utils.parser import load_document_by_uri
+from cwl_utils.parser.cwl_v1_2 import Workflow
+from loguru import logger
+from ruamel.yaml import YAML
+
+from . import extract_assertion_hints
 
 
 def _scan_workflow(wf: Workflow, inputs: Mapping[str, Any]):
@@ -57,7 +59,7 @@ def _scan_workflow(wf: Workflow, inputs: Mapping[str, Any]):
                     f"    {type(validator).__name__} detected violations below:"
                 )
 
-                for error_detail in problem_details.errors:
+                for error_detail in problem_details.errors or []:
                     logger.error(f"    [{error_detail.pointer}] {error_detail.detail}")
             else:
                 logger.info(
@@ -92,7 +94,7 @@ def main(workflow: Path, inputs: Path):
     logger.info(f"Loading inputs from {inputs.absolute()}")
 
     with inputs.open() as input_stream:
-        inputs_mapping = yaml.safe_load(input_stream)
+        inputs_mapping = YAML().load(input_stream)
 
     if isinstance(cwl_document, list):
         for wf in cwl_document:

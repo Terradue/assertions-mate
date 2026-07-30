@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Mapping
+from typing import Any
+
+from eoap_problems_registry import BusinessRuleViolation, ErrorDetail, ProblemDetails
+from regopy import Interpreter  # type: ignore[import-untyped]
+from regopy.interpreter import Input  # type: ignore[import-untyped]
+
 from . import BaseValidator
-from .error_models import BusinessRuleViolation, ErrorDetail, ProblemDetails
-from regopy import Interpreter
-from typing import Any, List, Mapping
 
 
 class RegoValidator(BaseValidator):
-    def __init__(self, module: str, queries: List[str]):
+    def __init__(self, module: str, queries: list[str]):
         self.rego = Interpreter()
         self.rego.add_module("workflow", module)
         self.queries = queries
@@ -27,7 +31,7 @@ class RegoValidator(BaseValidator):
     def validate_inputs(self, data: Mapping[str, Any]) -> ProblemDetails | None:
         errors_list = []
 
-        self.rego.set_input(data)
+        self.rego.set_input(Input(data))
 
         for query in self.queries:
             for result in self.rego.query(query):
@@ -40,3 +44,5 @@ class RegoValidator(BaseValidator):
 
         if errors_list:
             return BusinessRuleViolation(errors=errors_list)
+
+        return None

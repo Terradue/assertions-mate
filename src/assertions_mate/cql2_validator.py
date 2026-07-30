@@ -12,17 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import BaseValidator, Cql2Query
+from collections.abc import Mapping
+from numbers import Integral, Real
+from typing import Any
+
 from eoap_problems_registry import (
     BusinessRuleViolation,
     ErrorDetail,
     ProblemDetails,
 )
-from pygeofilter.backends.native.evaluate import NativeEvaluator
-from pygeofilter.parsers.cql2_text import parse as parse_cql2_text
-from pygeofilter.parsers.cql2_json import parse as parse_cql2_json
-from typing import Any, List, Mapping
-from numbers import Integral, Real
+from pygeofilter.backends.native.evaluate import (  # type: ignore[import-untyped]
+    NativeEvaluator,
+)
+from pygeofilter.parsers.cql2_json import (  # type: ignore[import-untyped]
+    parse as parse_cql2_json,
+)
+from pygeofilter.parsers.cql2_text import (  # type: ignore[import-untyped]
+    parse as parse_cql2_text,
+)
+
+from . import BaseValidator, Cql2Query
 
 
 def _to_builtin(value: Any) -> Any:
@@ -43,11 +52,13 @@ def _to_builtin(value: Any) -> Any:
 
 
 class Cql2Validator(BaseValidator):
-    def __init__(self, queries: List[Cql2Query], custom_functions: str | None = None):
-        function_map = {}
+    def __init__(self, queries: list[Cql2Query], custom_functions: str | None = None):
+        function_map: dict[str, Any] = {}
 
         if custom_functions:
-            exec(custom_functions, function_map)
+            # SECURITY: CWL custom functions are trusted application code.
+            # Loading untrusted workflows would permit arbitrary code execution.
+            exec(custom_functions, function_map)  # nosec B102
 
         self.evaluator = NativeEvaluator(function_map=function_map, use_getattr=False)
 

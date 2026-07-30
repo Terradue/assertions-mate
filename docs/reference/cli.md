@@ -1,5 +1,20 @@
 # CLI Reference
 
+## Installation
+
+Starting with version `0.9.0`, the CLI dependencies are optional. Install the
+package with the `cli` extra to use the `assertions-mate` command:
+
+```bash
+pip install "assertions-mate[cli]"
+```
+
+For an editable installation from source, use:
+
+```bash
+pip install -e ".[cli]"
+```
+
 ## Command
 
 ```bash

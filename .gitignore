@@ -9,3 +9,11 @@ schema.yaml
 src/assertions_mate/__pycache__
 .task
 .vscode
+.agents
+.codex
+.vscode
+.pytest_cache
+.ruff_cache
+.vscode
+.mypy_cache
+uv.lock

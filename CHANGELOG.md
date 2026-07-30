@@ -9,13 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-### Changed
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [0.9.0] - 2027-07-31
+
+### Added
+
+- Stronger code chekers with Ruff+McCabe & Bandit
+
+### Changed
+
+- dependencies bump:
+  - `click` to `8.4.2`.
+  - `cwl-utils` to `0.42`.
+  - `cwl2ogc` to `0.19.0`.
+  - `pygeofilter[backend-native]` to `0.4.0`.
+  - `requests` to `2.34.2`.
+  - `session-adapters` to `0.5.0`.
+  - `eoap-problems-registry` to `1.3.0`.
+
+- `click` dependency moved to `optional-dependencies`
+
+### Removed
+
+- `PyYAML` replaced by `ruamel.yaml` already used by `cwl-utils`. 
 
 ## [0.8.0] - 2027-07-21
 
@@ -98,7 +119,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed documentation build issues around PlantUML and MkDocs plugin configuration.
 - Fixed API documentation generation and schema behavior according to canonical CWL practices.
 
-[Unreleased]: https://github.com/Terradue/assertions-mate/compare/v0.8.0...develop
+[Unreleased]: https://github.com/Terradue/assertions-mate/compare/v0.9.0...develop
+[0.9.0]: https://github.com/Terradue/assertions-mate/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/Terradue/assertions-mate/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Terradue/assertions-mate/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Terradue/assertions-mate/compare/v0.5.0...v0.6.0

@@ -13,13 +13,12 @@
 # limitations under the License.
 
 import json
-from json import JSONDecodeError
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 from urllib.parse import urlparse
 
 import requests
-import yaml
 from eoap_problems_registry import (
     ErrorDetail,
     InvalidBodyPropertyFormat,
@@ -30,12 +29,12 @@ from referencing import Registry as ReferencingRegistry
 from referencing import Resource
 from referencing.exceptions import NoSuchResource
 from referencing.jsonschema import DRAFT202012
-from session_adapters.file_adapter import FileAdapter
-from session_adapters.oci_adapter import OCIAdapter
-from session_adapters.s3_adapter import S3Adapter
+from ruamel.yaml import YAML
+from session_adapters.file_adapter import FileAdapter  # type: ignore[import-untyped]
+from session_adapters.oci_adapter import OCIAdapter  # type: ignore[import-untyped]
+from session_adapters.s3_adapter import S3Adapter  # type: ignore[import-untyped]
 
 from . import BaseValidator
-
 
 _REMOTE_SCHEMA_TIMEOUT_SECONDS = 10
 
@@ -106,8 +105,8 @@ class JSONSchemaRegistry:
                 if schema_format == "json":
                     return json.loads(text)
 
-                return yaml.safe_load(text)
-            except (JSONDecodeError, yaml.YAMLError) as error:
+                return YAML().load(text)
+            except Exception as error:
                 last_error = error
 
         raise ValueError(f"Unable to parse JSON Schema from {uri}") from last_error
@@ -120,7 +119,7 @@ class JSONSchemaRegistry:
 
         path = Path(uri)
         if not path.exists():
-            raise NoSuchResource(ref=uri)
+            raise NoSuchResource(uri)
 
         return path.absolute().as_uri()
 
@@ -131,10 +130,10 @@ class JSONSchemaRegistry:
                 timeout=self.timeout,
             )
         except requests.exceptions.InvalidSchema as error:
-            raise NoSuchResource(ref=uri) from error
+            raise NoSuchResource(uri) from error
 
         if response.status_code == 404:
-            raise NoSuchResource(ref=uri)
+            raise NoSuchResource(uri)
 
         response.raise_for_status()
 
@@ -148,7 +147,8 @@ class JSONSchemaRegistry:
         return DRAFT202012.create_resource(self.load_schema(uri))
 
     def as_referencing_registry(self) -> ReferencingRegistry[Any]:
-        return ReferencingRegistry(retrieve=self.retrieve)
+        # mypy does not understand the attrs field alias used by referencing.
+        return ReferencingRegistry(retrieve=self.retrieve)  # type: ignore[call-arg]
 
 
 class JSONSchemaValidator(BaseValidator):
