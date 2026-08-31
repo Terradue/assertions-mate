@@ -21,9 +21,7 @@ tasks:
 
   default:
     cmds:
-    - task: quality:check
-    - task: quality:lint
-    - task: quality:test
+    - task: quality:pre-commit:run
 
   examples:
     desc: "Run every example"

@@ -1,4 +1,4 @@
-# Copyright 2025 Terradue
+# Copyright 2026 Terradue
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,22 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-from collections.abc import Mapping
-from datetime import datetime
-from pathlib import Path
-from typing import Any
+from __future__ import annotations
 
-import click
-from cwl_utils.parser import load_document_by_uri
-from cwl_utils.parser.cwl_v1_2 import Workflow
+from typing import TYPE_CHECKING, Annotated, Any
+
+from cwl_utils.parser import Process, Workflow
 from loguru import logger
+from pydantic import BaseModel, ConfigDict, Field
 from ruamel.yaml import YAML
+from transpiler_mate.api import (
+    transpiler_plugin,
+)
 
 from . import extract_assertion_hints
 
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+    from pathlib import Path
 
-def _scan_workflow(wf: Workflow, inputs: Mapping[str, Any]):
+    from transpiler_mate.api import TranspilerContext
+
+
+class AssertionsMateOptions(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    inputs: Annotated[
+        Path,
+        Field(description="The Workflow inputs to check against the input Workflow"),
+    ]
+
+
+def _scan_workflow(wf: Process, inputs: Mapping[str, Any]):
     logger.info(
         "------------------------------------------------------------------------"
     )
@@ -69,50 +84,17 @@ def _scan_workflow(wf: Workflow, inputs: Mapping[str, Any]):
         logger.info(f"No Validators configured in '#{workflow_id}.hints'")
 
 
-@click.command()
-@click.argument(
-    "workflow",
-    type=click.Path(path_type=Path, exists=True, readable=True, resolve_path=True),
-    required=True,
+@transpiler_plugin(
+    name="assertions-mate",
+    description="{{ project_description }}",
+    options_model=AssertionsMateOptions,
 )
-@click.option(
-    "--inputs",
-    type=click.Path(path_type=Path, exists=True, readable=True, resolve_path=True),
-    required=True,
-    help="The Workflow inputs to check against the input Workflow",
-)
-def main(workflow: Path, inputs: Path):
-    start_time = time.time()
+def assertions_mate(context: TranspilerContext, options: AssertionsMateOptions) -> None:
+    """{{ project_description }}"""
+    logger.info(f"Loading inputs from {options.inputs.absolute()}")
 
-    logger.info(f"Loading CWL document from {workflow.absolute()}")
+    with options.inputs.open() as input_stream:
+        inputs_mapping: Mapping[str, Any] = YAML().load(input_stream)
 
-    cwl_document = load_document_by_uri(path=workflow, load_all=True)
-
-    end_time = time.time()
-    logger.info(f"{workflow.absolute()} load in {end_time - start_time:.4f} seconds")
-
-    logger.info(f"Loading inputs from {inputs.absolute()}")
-
-    with inputs.open() as input_stream:
-        inputs_mapping = YAML().load(input_stream)
-
-    if isinstance(cwl_document, list):
-        for wf in cwl_document:
-            _scan_workflow(wf, inputs_mapping)
-    else:
-        _scan_workflow(cwl_document, inputs_mapping)
-
-    end_time = time.time()
-
-    logger.info(
-        "------------------------------------------------------------------------"
-    )
-    logger.info("VALIDATION COMPLETE")
-    logger.info(
-        "------------------------------------------------------------------------"
-    )
-
-    logger.info(f"Total time: {end_time - start_time:.4f} seconds")
-    logger.info(
-        f"Finished at: {datetime.fromtimestamp(end_time).isoformat(timespec='milliseconds')}"
-    )
+    for workflow in context.get_processes_by_type(Workflow):
+        _scan_workflow(workflow, inputs_mapping)
