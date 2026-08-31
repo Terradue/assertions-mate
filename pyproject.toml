@@ -45,7 +45,7 @@ Source = "https://github.com/Terradue/assertions-mate"
 
 [project.optional-dependencies]
 cli = [
-  "click==8.4.2",
+  "click==8.5.0",
 ]
 
 [project.scripts]
